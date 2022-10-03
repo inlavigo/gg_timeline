@@ -1,39 +1,58 @@
-<!-- 
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
-
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/guides/libraries/writing-package-pages). 
-
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-library-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/developing-packages). 
--->
-
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
+GgTimeline allows you to manage arbitrary data like on a timeline.
 
 ## Features
 
-TODO: List what your package can do. Maybe include images, gifs, or videos.
-
-## Getting started
-
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
+- Arrange arbitrary data on a timeline
+- Retrieve data values from arbitrary time positions
+- Replace existing items on a timeline
+- There is always a valid value on the timeline
 
 ## Usage
 
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder. 
+Derive your custom timeline class by extending `GgTimeline<T>`.
 
-```dart
-const like = 'sample';
-```
+~~~dart
+class ExampleTimeline extends GgTimeline<int> {
+}
+~~~
 
-## Additional information
+Implement the `seed` property providing an initial value. `GgTimeline` will add
+the seed into the timeline at position 0. Thus timeline will always provide a
+valid value.
 
-TODO: Tell users more about the package: where to find more information, how to 
-contribute to the package, how to file issues, what response they can expect 
-from the package authors, and more.
+~~~dart
+  @override
+  int get seed => 0;
+~~~
+
+Add additional items using `addOrReplaceItem(...)`:
+
+~~~dart
+  ExampleTimeline() {
+    for (int i = 0; i < 20; i++) {
+      addOrReplaceItem(
+        data: i,
+        validFrom: i.toDouble(),
+      );
+    }
+  }
+~~~
+
+Now you can instantiate your timeline and retrieve values from arbitrary time positions:
+
+~~~dart
+final timeline = ExampleTimeline();
+final firstItem = timeline.item(0.0);
+final secondItem = timeline.item(1.0);
+final lastItem = timeline.item(50.0);
+~~~
+
+You can also retrieve timeline items for positions in between:
+
+~~~dart
+final firstItem2 = timeline.item(0.5);
+~~~
+
+## Features and bugs
+
+Please file feature requests and bugs at [GitHub](https://github.com/inlavigo/gg_timeline).

@@ -32,6 +32,20 @@ void main() {
       });
     });
 
+    // #########################################################################
+    group('withItems(items)', () {
+      test('asserts that items are not empty', () {
+        expect(() => ExampleTimeline.withItems([]),
+            throwsA(const TypeMatcher<AssertionError>()));
+      });
+
+      test('creates a timeline with predefined set of items', () {
+        final timelineA = exampleGgTimeline();
+        final timelineB = ExampleTimeline.withItems(timelineA.items);
+        expect(timelineB.item(11.5), timelineA.item(11.5));
+      });
+    });
+
     group('currentItem, nextItem, jumpToOrBefore, jumpToBeginning', () {
       test('should set current item to the right one', () {
         expect(timeline.currentItem, timeline.items.first);

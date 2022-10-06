@@ -15,9 +15,19 @@ abstract class GgTimeline<T> {
     _init();
   }
 
+  // ...........................................................................
+  GgTimeline.withItems(Iterable<GgTimelineItem<T>> items) {
+    assert(items.isNotEmpty);
+    _items.addAll(items);
+    _currentItem = items.first;
+    _indexOfCurrentItem = 0;
+  }
+
+  // ...........................................................................
   /// Returns the initial item. The seed will be initially put on t = 0.
   T get seed;
 
+  // ...........................................................................
   /// Returns all items
   List<GgTimelineItem<T>> get items => _items;
 
@@ -218,6 +228,11 @@ class ExampleTimeline extends GgTimeline<double> {
   ExampleTimeline() {
     _addFurtherItems();
   }
+
+  // ...........................................................................
+  /// Create an timeline from a given list of timeline items
+  ExampleTimeline.withItems(Iterable<GgTimelineItem<double>> items)
+      : super.withItems(items);
 
   // ...........................................................................
   /// The inital value inserted on the timeline

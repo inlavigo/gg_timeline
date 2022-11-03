@@ -66,9 +66,13 @@ abstract class GgTimeline<T> {
   }) {
     jumpToOrBefore(timePosition);
 
-    bool hasEnoughItems = _indexOfCurrentItem >= count - 1;
-    final startIndex = hasEnoughItems ? _indexOfCurrentItem - count + 1 : 0;
-    final endIndex = _indexOfCurrentItem;
+    final index = _currentItem.validTo < timePosition
+        ? _indexOfCurrentItem
+        : _indexOfCurrentItem - 1;
+
+    bool hasEnoughItems = index >= count - 1;
+    final startIndex = hasEnoughItems ? index - count + 1 : 0;
+    final endIndex = index;
 
     return _items.sublist(startIndex, endIndex + 1);
   }

@@ -148,19 +148,30 @@ void main() {
 
     // #########################################################################
     group('futureItems(timePosition, n)', () {
-      test('should return n items beginning at timePosition', () {
+      test(
+          'should return the n first items when timePosition is before beginning',
+          () {
         const count = 2;
         final futureItems =
-            timeline.futureItems(timePosition: 0.0, count: count);
+            timeline.futureItems(timePosition: -0.001, count: count);
 
         expect(futureItems.first, timeline.items.first);
+        expect(futureItems.length, count);
+      });
+
+      test('should return n items behind timePosition', () {
+        const count = 2;
+        final futureItems = timeline.futureItems(timePosition: 0, count: count);
+
+        final secondItem = timeline.items[1];
+        expect(futureItems.first, secondItem);
         expect(futureItems.length, count);
       });
 
       test('should return available items if count is too big', () {
         const count = 10000;
         final futureItems =
-            timeline.futureItems(timePosition: 0.0, count: count);
+            timeline.futureItems(timePosition: -0.001, count: count);
 
         expect(futureItems.first, timeline.items.first);
         expect(futureItems.length, timeline.items.length);
@@ -170,8 +181,11 @@ void main() {
           'should return available items if not enough items are available anymore',
           () {
         const count = 5;
+
+        final secondLastItem = timeline.items[timeline.items.length - 2];
+
         final futureItems = timeline.futureItems(
-          timePosition: timeline.items.last.validFrom,
+          timePosition: secondLastItem.validFrom,
           count: count,
         );
 

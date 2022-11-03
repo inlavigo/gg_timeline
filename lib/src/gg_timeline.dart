@@ -39,18 +39,23 @@ abstract class GgTimeline<T> {
   }
 
   // ...........................................................................
-  /// Returns n future items starting at the given time position.
+  /// Returns n future items starting after the given time position.
   Iterable<GgTimelineItem<T>> futureItems({
     required GgSeconds timePosition,
     required int count,
   }) {
     jumpToOrBefore(timePosition);
 
-    bool hasEnoughItems = _indexOfCurrentItem + count <= _items.length;
+    // If time is before start of song, also the first item is a future item.
+    // Otherwise future items are all items behind the current item
+    final index =
+        timePosition >= 0 ? _indexOfCurrentItem + 1 : _indexOfCurrentItem;
 
-    final endIndex = hasEnoughItems ? _indexOfCurrentItem + count : null;
+    bool hasEnoughItems = index + count <= _items.length;
 
-    return _items.sublist(_indexOfCurrentItem, endIndex);
+    final endIndex = hasEnoughItems ? index + count : null;
+
+    return _items.sublist(index, endIndex);
   }
 
   // ...........................................................................

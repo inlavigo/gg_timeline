@@ -4,8 +4,6 @@
 // Use of this source code is governed by terms that can be
 // found in the LICENSE file in the root of this package.
 
-import 'dart:developer';
-
 import 'package:gg_timeline/gg_timeline.dart';
 import 'package:test/test.dart';
 
@@ -33,7 +31,7 @@ void main() {
     group('initialization', () {
       test('should work fine', () {
         expect(timeline, isNotNull);
-        expect(timeline.items.length, ExampleTimeline.numItems);
+        expect(timeline.items.length, 20);
         expect(timeline.item(0.0), firstItem);
         expect(timeline.item(0.0).validFrom, 0.0);
         expect(timeline.item(0.0).validTo, 1.0);
@@ -296,6 +294,14 @@ void main() {
 
           expect(pastItems, [secondLastItem, lastItem]);
         });
+      });
+    });
+
+    // #########################################################################
+    group('isInitial)', () {
+      test('should return true if timeline contains only the seed item', () {
+        final timeline = ExampleTimeline(numItems: 0);
+        expect(timeline.isInitial, true);
       });
     });
   });

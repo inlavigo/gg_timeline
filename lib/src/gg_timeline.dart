@@ -28,6 +28,9 @@ abstract class GgTimeline<T> {
   T get seed;
 
   // ...........................................................................
+  bool get isInitial => _items.length == 1 && _items.first.data == seed;
+
+  // ...........................................................................
   /// Returns all items
   List<GgTimelineItem<T>> get items => _items;
 
@@ -234,8 +237,8 @@ abstract class GgTimeline<T> {
 // #############################################################################
 /// A example timeline that can be used for test purposes.
 class ExampleTimeline extends GgTimeline<double> {
-  ExampleTimeline() {
-    _addFurtherItems();
+  ExampleTimeline({int numItems = 20}) {
+    _addFurtherItems(numItems);
   }
 
   // ...........................................................................
@@ -248,14 +251,11 @@ class ExampleTimeline extends GgTimeline<double> {
   @override
   double get seed => 0.0;
 
-  /// The number of items in the timeline
-  static const int numItems = 20;
-
   // ######################
   // Private
   // ######################
 
-  void _addFurtherItems() {
+  void _addFurtherItems(int numItems) {
     for (int i = 0; i < numItems; i++) {
       addOrReplaceItem(
         data: i.toDouble(),

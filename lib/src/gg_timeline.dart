@@ -46,19 +46,26 @@ abstract class GgTimeline<T> {
   Iterable<GgTimelineItem<T>> futureItems({
     required GgSeconds timePosition,
     required int count,
+    bool Function(GgTimelineItem<T>)? where,
   }) {
     jumpToOrBefore(timePosition);
 
     // If time is before start of song, also the first item is a future item.
     // Otherwise future items are all items behind the current item
-    final index =
+    var index =
         timePosition >= 0 ? _indexOfCurrentItem + 1 : _indexOfCurrentItem;
 
-    bool hasEnoughItems = index + count <= _items.length;
+    final result = <GgTimelineItem<T>>[];
 
-    final endIndex = hasEnoughItems ? index + count : null;
+    while (index < _items.length && result.length < count) {
+      final item = _items[index];
+      if (where == null || where(item)) {
+        result.add(item);
+      }
+      index++;
+    }
 
-    return _items.sublist(index, endIndex);
+    return result;
   }
 
   // ...........................................................................
@@ -66,18 +73,25 @@ abstract class GgTimeline<T> {
   Iterable<GgTimelineItem<T>> pastItems({
     required GgSeconds timePosition,
     required int count,
+    bool Function(GgTimelineItem<T>)? where,
   }) {
     jumpToOrBefore(timePosition);
 
-    final index = _currentItem.validTo < timePosition
+    var index = _currentItem.validTo < timePosition
         ? _indexOfCurrentItem
         : _indexOfCurrentItem - 1;
 
-    bool hasEnoughItems = index >= count - 1;
-    final startIndex = hasEnoughItems ? index - count + 1 : 0;
-    final endIndex = index;
+    final result = <GgTimelineItem<T>>[];
 
-    return _items.sublist(startIndex, endIndex + 1);
+    while (index >= 0 && result.length < count) {
+      final item = _items[index];
+      if (where == null || where(item)) {
+        result.add(item);
+      }
+      index--;
+    }
+
+    return result.reversed;
   }
 
   // ######################

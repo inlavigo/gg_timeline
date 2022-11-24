@@ -156,7 +156,7 @@ void main() {
     });
 
     // #########################################################################
-    group('futureItems(timePosition, n)', () {
+    group('futureItems(timePosition, n, where)', () {
       test(
           'should return the n first items when timePosition is before beginning',
           () {
@@ -201,10 +201,23 @@ void main() {
         expect(futureItems.first, lastItem);
         expect(futureItems.length, 1);
       });
+
+      test('should filter items using "where" filter', () {
+        final futureItems = timeline
+            .futureItems(
+              count: 2,
+              timePosition: 0.0,
+              where: (p0) => p0.data >= 10,
+            )
+            .map((e) => e.data)
+            .toList();
+
+        expect(futureItems, [10.0, 11.0]);
+      });
     });
 
     // #########################################################################
-    group('pastItems(timePosition, n)', () {
+    group('pastItems(timePosition, n, where)', () {
       group('should return right past items', () {
         test('when timePosition is before start of the timeline', () {
           final pastItems = timeline.pastItems(
@@ -293,6 +306,18 @@ void main() {
           );
 
           expect(pastItems, [secondLastItem, lastItem]);
+        });
+
+        test('when filter is given', () {
+          final pastItems = timeline
+              .pastItems(
+                timePosition: lastItem.validTo,
+                count: 2,
+                where: (p0) => p0.data <= 5.0,
+              )
+              .map((e) => e.data);
+
+          expect(pastItems, [4.0, 5.0]);
         });
       });
     });

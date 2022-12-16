@@ -111,7 +111,7 @@ abstract class GgTimeline<T> {
   /// will become current item.
   void jumpToOrBefore(GgSeconds timePosition) {
     if (timePosition >= _currentItem.validFrom &&
-        timePosition < _currentItem.validTo) {
+        (timePosition < _currentItem.validTo || _currentItem.duration == 0.0)) {
       return;
     }
 

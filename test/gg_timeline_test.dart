@@ -32,9 +32,14 @@ void main() {
       test('should work fine', () {
         expect(timeline, isNotNull);
         expect(timeline.items.length, 20);
-        expect(timeline.item(0.0), firstItem);
-        expect(timeline.item(0.0).validFrom, 0.0);
-        expect(timeline.item(0.0).validTo, 1.0);
+
+        final item0a = timeline.item(0.0);
+        final item0b = timeline.item(0.0);
+        expect(item0a, same(item0b));
+        expect(item0a, firstItem);
+        expect(item0a.validFrom, 0.0);
+        expect(item0a.validTo, 1.0);
+
         expect(timeline.item(1.0).validFrom, 1.0);
         expect(timeline.item(1.0).validTo, 2.0);
         expect(timeline.seed, 0);

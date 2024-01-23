@@ -49,8 +49,10 @@ void main() {
     // #########################################################################
     group('withItems(items)', () {
       test('asserts that items are not empty', () {
-        expect(() => ExampleTimeline.withItems([]),
-            throwsA(const TypeMatcher<AssertionError>()));
+        expect(
+          () => ExampleTimeline.withItems([]),
+          throwsA(const TypeMatcher<AssertionError>()),
+        );
       });
 
       test('creates a timeline with predefined set of items', () {
@@ -106,7 +108,9 @@ void main() {
         final existingItem = timeline.currentItem;
         expect(existingItem, timeline.items.first);
         timeline.addOrReplaceItem(
-            data: data, timePosition: existingItem.validFrom);
+          data: data,
+          timePosition: existingItem.validFrom,
+        );
         expect(timeline.items.first.data, data);
       });
 
@@ -163,8 +167,8 @@ void main() {
     // #########################################################################
     group('futureItems(timePosition, n, where)', () {
       test(
-          'should return the n first items when timePosition is before beginning',
-          () {
+          'should return the n first items when timePosition is '
+          'before beginning', () {
         const count = 2;
         final futureItems =
             timeline.futureItems(timePosition: -0.001, count: count);
@@ -192,8 +196,8 @@ void main() {
       });
 
       test(
-          'should return available items if not enough items are available anymore',
-          () {
+          'should return available items if not enough items are available '
+          'anymore', () {
         const count = 5;
 
         final secondLastItem = timeline.items[timeline.items.length - 2];
@@ -230,7 +234,7 @@ void main() {
             count: 2,
           );
 
-          expect(pastItems, []);
+          expect(pastItems, <GgTimelineItem<double>>[]);
         });
 
         test('when timePosition is at the beginning of the timeline', () {
@@ -239,7 +243,7 @@ void main() {
             count: 2,
           );
 
-          expect(pastItems, []);
+          expect(pastItems, <GgTimelineItem<double>>[]);
         });
 
         test('when timePosition is shortly after beginning of the timeline',
@@ -249,18 +253,18 @@ void main() {
             count: 2,
           );
 
-          expect(pastItems, []);
+          expect(pastItems, <GgTimelineItem<double>>[]);
         });
 
         test(
-            'when timePosition is shortly before the end of the first item on the timeline',
-            () {
+            'when timePosition is shortly before the end of the first item on '
+            'the timeline', () {
           final pastItems = timeline.pastItems(
             timePosition: firstItem.validTo - 0.1,
             count: 2,
           );
 
-          expect(pastItems, []);
+          expect(pastItems, <GgTimelineItem<double>>[]);
         });
 
         test(
@@ -275,8 +279,8 @@ void main() {
         });
 
         test(
-            'when timePosition is shortly after the end of the first item on the timeline',
-            () {
+            'when timePosition is shortly after the end of the first item on '
+            'the timeline', () {
           final pastItems = timeline.pastItems(
             timePosition: firstItem.validTo + 0.1,
             count: 2,

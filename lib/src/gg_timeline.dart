@@ -11,11 +11,13 @@ import 'gg_timeline_item.dart';
 // #############################################################################
 /// The baseclass of timelines with items of type T
 abstract class GgTimeline<T> {
+  /// Constructor
   GgTimeline() {
     _init();
   }
 
   // ...........................................................................
+  /// Init a timeline with a list of items
   GgTimeline.withItems(Iterable<GgTimelineItem<T>> items) {
     assert(items.isNotEmpty);
     _items.addAll(items);
@@ -28,6 +30,7 @@ abstract class GgTimeline<T> {
   T get seed;
 
   // ...........................................................................
+  /// Returns true if timeline is an initial timeline
   bool get isInitial => _items.length == 1 && _items.first.data == seed;
 
   // ...........................................................................
@@ -251,14 +254,14 @@ abstract class GgTimeline<T> {
 // #############################################################################
 /// A example timeline that can be used for test purposes.
 class ExampleTimeline extends GgTimeline<double> {
+  /// Creates an example timeline for test purposes
   ExampleTimeline({int numItems = 20}) {
     _addFurtherItems(numItems);
   }
 
   // ...........................................................................
   /// Create an timeline from a given list of timeline items
-  ExampleTimeline.withItems(Iterable<GgTimelineItem<double>> items)
-      : super.withItems(items);
+  ExampleTimeline.withItems(super.items) : super.withItems();
 
   // ...........................................................................
   /// The inital value inserted on the timeline
